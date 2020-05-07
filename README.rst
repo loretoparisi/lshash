@@ -2,7 +2,7 @@
 LSHash
 ======
 
-:Version: 0.0.4dev
+:Version: 0.0.5
 
 A fast Python implementation of locality sensitive hashing with persistance
 support.
