@@ -30,7 +30,8 @@ To install:
 
 .. code-block:: bash
 
-    $ pip install lshash
+    $ git clone https://github.com/loretoparisi/lshash.git
+    $ python setup.py install
 
 Quickstart
 ==========
