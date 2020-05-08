@@ -68,7 +68,7 @@ Main Interface
 
 .. code-block:: python
 
-    LSHash(hash_size, input_dim, num_of_hashtables=1, storage=None, matrices_filename=None, overwrite=False)
+    LSHash(hash_size, input_dim, num_of_hashtables=1, storage_config=None, matrices_filename=None, overwrite=False)
 
 parameters:
 
@@ -115,4 +115,5 @@ parameters:
     default all results will be returned.
 ``distance_func = "euclidean"``:
     (optional) Distance function to use to rank the candidates. By default
-    euclidean distance function will be used.
+    "euclidean" distance function will be used. Distance function can be 
+    "euclidean", "true_euclidean", "centred_euclidean", "cosine", "l1norm".

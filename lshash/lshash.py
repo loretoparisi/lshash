@@ -65,7 +65,7 @@ class LSHash(object):
     """
  
     def __init__(self, hash_size, input_dim, num_hashtables=1,
-                 storage_config=None, matrices_filename=None, overwrite=False):
+                 storage_config=None, matrices_filename=None, hashtable_filename=None, overwrite=False):
  
         self.hash_size = hash_size
         self.input_dim = input_dim
@@ -78,6 +78,11 @@ class LSHash(object):
         if matrices_filename and not matrices_filename.endswith('.npz'):
             raise ValueError("The specified file name must end with .npz")
         self.matrices_filename = matrices_filename
+
+        if hashtable_filename and not hashtable_filename.endswith('.npz'):
+            raise ValueError("The specified file name must end with .npz")
+        self.hashtable_filename = hashtable_filename
+
         self.overwrite = overwrite
  
         self._init_uniform_planes()
@@ -126,9 +131,30 @@ class LSHash(object):
     def _init_hashtables(self):
         """ Initialize the hash tables such that each record will be in the
         form of "[storage1, storage2, ...]" """
- 
-        self.hash_tables = [storage(self.storage_config, i)
-                            for i in xrange(self.num_hashtables)]
+
+        if self.hashtable_filename:
+            file_exist = os.path.isfile(self.hashtable_filename)
+            if file_exist:
+                try:
+                    npzfiles = np.load(self.hashtable_filename)
+                    npzfiles = sorted(npzfiles.items(), key=lambda x: x[0])
+                    #self.hash_tables = [t[1] for t in npzfiles]
+                    
+                    self.hash_tables = [t[1] for t in npzfiles]
+                    print("CARICATO",len(self.hash_tables), self.hash_tables[0],self.hash_tables[1])
+
+                    self.hash_tables = [storage(self.storage_config, i) for i in xrange(self.num_hashtables)]
+                    print("CREATO",len(self.hash_tables), self.hash_tables[0],self.hash_tables[1])
+
+                except IOError:
+                    print("Cannot load specified file as a numpy array")
+                    raise
+            else:
+                self.hash_tables = [storage(self.storage_config, i)
+                                for i in xrange(self.num_hashtables)]
+        else:
+            self.hash_tables = [storage(self.storage_config, i)
+                                for i in xrange(self.num_hashtables)]
  
     def _generate_uniform_planes(self):
         """ Generate uniformly distributed hyperplanes and return it as a 2D
@@ -218,12 +244,25 @@ class LSHash(object):
         if extra_data:
             value = (tuple(input_point), extra_data)
         else:
-            value = tuple(input_point)
+            # LP: extra_data to None to keep output consistency
+            value = (tuple(input_point), None)
  
         for i, table in enumerate(self.hash_tables):
             table.append_val(self._hash(self.uniform_planes[i], input_point),
                              value)
- 
+    
+    def save(self):
+        """
+            Save save the uniform planes to the specified file.
+        """
+        if self.hashtable_filename:
+            try:
+                np.savez_compressed(self.hashtable_filename,
+                                    *self.hash_tables)
+            except IOError:
+                print("IOError when saving hash tables to specificed path")
+                raise
+
     def query(self, query_point, num_results=None, distance_func=None):
         """ Takes `query_point` which is either a tuple or a list of numbers,
         returns `num_results` of results as a list of tuples that are ranked
