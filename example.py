@@ -50,6 +50,7 @@ nn = lsh.query([10,12,99,1,5,30,1,1], num_results=top_n, distance_func="euclidea
 print("query:", nn)
 
 # read matrix weights from local file without overwrite
+# local storage for numpy uniform random planes, overwrite matrix file
 lsh = LSHash(hash_size=k, input_dim=d, num_hashtables=L,
     storage_config={ 'dict': None },
     matrices_filename='weights.npz', 
