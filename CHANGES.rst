@@ -1,2 +1,2 @@
-:Version: 0.0.6
+:Version: 0.0.8
 :Python: 3.7.7

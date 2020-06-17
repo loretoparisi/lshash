@@ -25,6 +25,7 @@ setup(
     author_email='me@kayzhu.com',
     maintainer='Loreto Parisi',
     maintainer_email='loretoparisi@gmail.com',
+    url="https://github.com/loretoparisi/lshash",
     description='A fast Python 3 implementation of locality sensitive hashing with persistance support.',
     long_description=readme + '\n\n' + changes,
     long_description_content_type='text/x-rst',
