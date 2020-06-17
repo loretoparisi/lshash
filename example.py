@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from lshash import LSHash
+from lshashpy3 import LSHash
 
 # create 6-bit hashes for input data of 8 dimensions:
 k = 6 # hash size
