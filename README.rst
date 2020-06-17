@@ -29,12 +29,19 @@ Installation
 Optional
 - redis (if persistency through Redis is needed)
 
-To install:
+To install from sources:
 
 .. code-block:: bash
 
     $ git clone https://github.com/loretoparisi/lshash.git
     $ python setup.py install
+    
+To install from PyPI:
+
+.. code-block:: bash
+
+    $ pip install lshashpy3
+    $ python -c "import lshashpy3 as lshash; print(lshash.__version__);"
 
 Quickstart
 ==========
