@@ -17,7 +17,7 @@ with open('LICENSE') as f:
 with open('CHANGES.rst') as f:
     changes = f.read()
 
-required = ['numpy']
+required = ['numpy', 'bitarray']
 
 setup(
     name='lshash',

@@ -138,7 +138,6 @@ class LSHash(object):
                 try:
                     npzfiles = np.load(self.hashtable_filename, allow_pickle=True)
                     self.hash_tables = npzfiles['data']
-                    print("loaded",self.hash_tables)
                 except IOError:
                     print("Cannot load specified file as a numpy array")
                     raise
@@ -250,8 +249,6 @@ class LSHash(object):
         """
         if self.hashtable_filename:
             try:
-
-                print("stored",self.hash_tables)
                 np.savez_compressed(self.hashtable_filename, allow_pickle=True, data=self.hash_tables)
 
             except IOError:
