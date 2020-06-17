@@ -42,22 +42,21 @@ lsh = LSHash(hash_size=k, input_dim=d, num_hashtables=L,
 lsh.index([10,12,99,1,5,31,2,3], extra_data="vec1")
 lsh.index([10,11,94,1,4,31,2,3], extra_data="vec2")
 
-# save hash table to disk 
-lsh.save()
-
 top_n = 3
 nn = lsh.query([10,12,99,1,5,30,1,1], num_results=top_n, distance_func="euclidean")
 print("query:", nn)
 
-# read matrix weights from local file without overwrite
+# save hash table to disk 
+lsh.save()
+
 # local storage for numpy uniform random planes, overwrite matrix file
 lsh = LSHash(hash_size=k, input_dim=d, num_hashtables=L,
     storage_config={ 'dict': None },
     matrices_filename='weights.npz', 
     hashtable_filename='hash.npz', 
-    overwrite=False)
+    overwrite=True)
 
-# load saved hash table
+# execute a query loading hash table from local file system
 top_n = 3
 nn = lsh.query([10,12,99,1,5,30,1,1], num_results=top_n, distance_func="euclidean")
 print("query:", nn)

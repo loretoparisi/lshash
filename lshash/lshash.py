@@ -132,25 +132,13 @@ class LSHash(object):
         """ Initialize the hash tables such that each record will be in the
         form of "[storage1, storage2, ...]" """
 
-        if self.hashtable_filename and False:
+        if self.hashtable_filename:
             file_exist = os.path.isfile(self.hashtable_filename)
             if file_exist:
                 try:
-                    npzfiles = np.load(self.hashtable_filename)
-                    npzfiles = sorted(npzfiles.items(), key=lambda x: x[0])
-                    
-                    hash_tables = [t[1] for t in npzfiles]
-                    
-                    self.hash_tables = [storage(self.storage_config, i) for i in xrange(self.num_hashtables)]
-                    for i, table in enumerate(hash_tables):
-                        print(hash_tables[i].size)
-                        for key in table.keys():
-                            val = table.get_val(key)
-                            #self.hash_tables[i].append_val(key,val)
-
-                        #table.append_val(self._hash(self.uniform_planes[i], input_point),value)
-
-                    
+                    npzfiles = np.load(self.hashtable_filename, allow_pickle=True)
+                    self.hash_tables = npzfiles['data']
+                    print("loaded",self.hash_tables)
                 except IOError:
                     print("Cannot load specified file as a numpy array")
                     raise
@@ -263,24 +251,8 @@ class LSHash(object):
         if self.hashtable_filename:
             try:
 
-                for i, table in enumerate(self.hash_tables):
-                    print(table)
-                    for key in table.keys():
-                        val = table.get_val(key)
-                        print(key,val)
-
-                np.savez_compressed(self.hashtable_filename,
-                                    *self.hash_tables)
-
-                npzfiles = np.load(self.hashtable_filename)
-                npzfiles = sorted(npzfiles.items(), key=lambda x: x[0])
-                hash_tables = [t[1] for t in npzfiles]
-
-                for i, table in enumerate(hash_tables):
-                    print("stored",table)
-                    for key in table.keys():
-                        val = table.get_val(key)
-                        print(key,val)
+                print("stored",self.hash_tables)
+                np.savez_compressed(self.hashtable_filename, allow_pickle=True, data=self.hash_tables)
 
             except IOError:
                 print("IOError when saving hash tables to specificed path")
