@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import lshashpy3
+
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-
-with open('README.rst', encoding='utf-8') as f:
+from os import path
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
     readme = f.read()
 
-with open('CHANGES.rst', encoding='utf-8') as f:
+with open(path.join(this_directory, 'CHANGES.rst'), encoding='utf-8') as f:
     changes = f.read()
 
 required = ['numpy', 'bitarray']
