@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import lshashpy3
-
 try:
     from setuptools import setup
 except ImportError:
@@ -15,11 +13,11 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 with open(path.join(this_directory, 'CHANGES.rst'), encoding='utf-8') as f:
     changes = f.read()
 
-required = ['numpy', 'bitarray']
+required = ['future', 'six', 'numpy', 'bitarray']
 
 setup(
     name='lshashpy3',
-    version=lshashpy3.__version__,
+    version='0.0.8',
     packages=['lshashpy3'],
     author='Kay Zhu',
     author_email='me@kayzhu.com',
@@ -30,7 +28,7 @@ setup(
     long_description=readme + '\n\n' + changes,
     long_description_content_type='text/x-rst',
     license='MIT License',
-    requires=required,
+    install_requires=required,
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
