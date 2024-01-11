@@ -67,8 +67,8 @@ To create 6-bit hashes for input data of 8 dimensions:
  # unpack vector, extra data and vectorial distance
  top_n = 3
  nn = lsh.query([10,12,99,1,5,30,1,1], num_results=top_n, distance_func="euclidean")
-    for ((vec,extra_data),distance) in nn:
-        print(vec, extra_data, distance)
+ for ((vec,extra_data),distance) in nn:
+     print(vec, extra_data, distance)
         
         
 To save hash table to disk:
