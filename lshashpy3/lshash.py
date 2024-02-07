@@ -322,6 +322,23 @@ class LSHash(object):
 
         return candidates[:num_results] if num_results else candidates
 
+    def get_hashes(self, input_point):
+        """ Takes a single input point `input_point`, iterate through the
+        uniform planes, and returns a list with size of `num_hashtables`
+        containing the corresponding hash for each hashtable.
+
+        :param input_point:
+            A list, or tuple, or numpy ndarray object that contains numbers
+            only. The dimension needs to be 1 * `input_dim`.
+        """
+        
+        hashes = []
+        for i, table in enumerate(self.hash_tables):
+            binary_hash = self._hash(self.uniform_planes[i], input_point)
+            hashes.append(binary_hash)
+        
+        return hashes
+
     ### distance functions
 
     @staticmethod
