@@ -93,7 +93,7 @@ To load hash table from disk and perform a query:
      storage_config={ 'dict': None },
      matrices_filename='weights.npz', 
      hashtable_filename='hash.npz', 
-     overwrite=True)
+     overwrite=False)
 
  top_n = 3
  nn = lsh.query([10,12,99,1,5,30,1,1], num_results=top_n, distance_func="euclidean")
