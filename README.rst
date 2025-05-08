@@ -99,6 +99,41 @@ To load hash table from disk and perform a query:
  nn = lsh.query([10,12,99,1,5,30,1,1], num_results=top_n, distance_func="euclidean")
  print(nn)
 
+New Feature: Multiprocessing Support
+===================================
+
+The library now supports indexing multiple items in parallel using the `index_batch` method. This feature leverages Python's `multiprocessing` module to speed up the indexing process for large datasets.
+
+Example: Using Multiprocessing for Batch Indexing
+--------------------------------------------------
+
+To index multiple items in parallel:
+
+.. code-block:: python
+
+    from lshashpy3 import LSHash
+
+    # Create an LSHash instance
+    lsh = LSHash(hash_size=6, input_dim=8, num_hashtables=5)
+
+    # Define input points and optional extra data
+    input_points = [
+        [2, 3, 4, 5, 6, 7, 8, 9],
+        [10, 12, 99, 1, 5, 31, 2, 3],
+        [10, 11, 94, 1, 4, 31, 2, 3],
+        [1, 2, 3, 4, 5, 6, 7, 7],
+        [10, 12, 99, 1, 5, 30, 1, 1]
+    ]
+    extra_data_list = ["vec1", "vec2", "vec3", "vec4", "vec5"]
+
+    # Index the points in parallel
+    lsh.index_batch(input_points, extra_data_list)
+
+    # Verify the indexed data
+    for point, extra_data in zip(input_points, extra_data_list):
+        hashes = lsh.get_hashes(point)
+        print(f"Point: {point}, Extra Data: {extra_data}, Hashes: {hashes}")
+
 API
 ==============
 
