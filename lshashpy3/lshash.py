@@ -20,6 +20,7 @@ import six           # noqa
 import os
 import json
 import numpy as np
+from multiprocessing import Pool, cpu_count
 
 try:
     from storage import storage  # py2
@@ -246,6 +247,26 @@ class LSHash(object):
             table.append_val(h, value)
             hashes.append(h)
         return hashes
+
+    def index_batch(self, input_points, extra_data_list=None):
+        """
+        Index multiple input points in parallel using multiprocessing.
+
+        :param input_points: List of input points to index.
+        :param extra_data_list: (optional) List of extra data corresponding to each input point.
+        """
+        if extra_data_list is None:
+            extra_data_list = [None] * len(input_points)
+
+        if len(input_points) != len(extra_data_list):
+            raise ValueError("input_points and extra_data_list must have the same length")
+
+        # Prepare data for multiprocessing
+        data = list(zip(input_points, extra_data_list))
+
+        # Use multiprocessing Pool to index data in parallel
+        with Pool(cpu_count()) as pool:
+            pool.starmap(self.index, data)
 
     def save(self):
         """

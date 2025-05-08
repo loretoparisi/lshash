@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from lshashpy3 import LSHash
+from multiprocessing import cpu_count
 
 # create 6-bit hashes for input data of 8 dimensions:
 k = 6 # hash size
@@ -72,3 +73,22 @@ lsh = LSHash(hash_size=k, input_dim=d, num_hashtables=L,
 top_n = 3
 nn = lsh.query([10,12,99,1,5,30,1,1], num_results=top_n, distance_func="euclidean")
 print("query from disk (euclidean):", nn)
+
+# Example: Index multiple items using multiprocessing
+input_points = [
+    [2, 3, 4, 5, 6, 7, 8, 9],
+    [10, 12, 99, 1, 5, 31, 2, 3],
+    [10, 11, 94, 1, 4, 31, 2, 3],
+    [1, 2, 3, 4, 5, 6, 7, 7],
+    [10, 12, 99, 1, 5, 30, 1, 1]
+]
+extra_data_list = ["vec1", "vec2", "vec3", "vec4", "vec5"]
+
+# Indexing in parallel
+print(f"Using {cpu_count()} CPU cores for multiprocessing...")
+lsh.index_batch(input_points, extra_data_list)
+
+# Verify the indexed data
+for point, extra_data in zip(input_points, extra_data_list):
+    hashes = lsh.get_hashes(point)
+    print(f"Point: {point}, Extra Data: {extra_data}, Hashes: {hashes}")
